@@ -12,6 +12,7 @@ use App\Http\Controllers\PemberianPakanController;
 use App\Http\Controllers\PenjualanController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
