@@ -1,0 +1,39 @@
+[{
+        "nama": "Dashboard",
+        "icon": "bx-home-smile",
+        "url": "/app/dashboard"
+    },
+    {
+        "nama": "Presensi",
+        "icon": "bx-calendar-check",
+        "url": "#",
+        "children": [{
+                "nama": "Upload Presensi",
+                "icon": "bx-group",
+                "url": "/app/upload-presensi"
+            },
+            {
+                "nama": "Hitung Penggajian",
+                "icon": "bx-leaf",
+                "url": "/app/hitung-pengajian"
+            }
+        ]
+    },
+
+    {
+        "nama": "Rab",
+        "icon": "bx-group",
+        "url": "/app/rab"
+    },
+
+    {
+        "nama": "Jurnal Transaksi",
+        "icon": "bx-money",
+        "url": "/app/transaksi"
+    },
+    {
+        "nama": "Laporan",
+        "icon": "bx-food-menu",
+        "url": "/app/laporan"
+    }
+]

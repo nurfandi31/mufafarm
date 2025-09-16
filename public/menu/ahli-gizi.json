@@ -1,0 +1,15 @@
+[{
+    "nama": "Dashboard",
+    "icon": "bx-home-smile",
+    "url": "/app/dashboard"
+}, {
+    "nama": "Master Data"
+}, {
+    "nama": "Menu",
+    "icon": "bx-food-menu",
+    "url": "/app/menu"
+}, {
+    "nama": "Rancang Menu",
+    "icon": "bx-add-to-queue",
+    "url": "/app/rancang-menu"
+}]
