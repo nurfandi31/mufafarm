@@ -1,6 +1,6 @@
 @extends('app.layouts.app')
 @section('content')
-    <form action="/app/karyawan/{{ $karyawan->id }}" method="POST" id="FormKaryawanEdit" enctype="multipart/form-data">
+    <form action="/app/user/{{ $user->id }}" method="POST" id="FormKaryawanEdit" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -12,85 +12,96 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <div class="mb-6">
                             <label for="nik" class="form-label">Nik</label>
                             <input type="text" maxlength="16" class="form-control" id="nik" name="nik"
-                                value="{{ $karyawan->nik }}">
+                                value="{{ $user->nik }}">
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <div class="mb-6">
-                            <label for="nama" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama" name="nama"
-                                value="{{ $karyawan->nama }}">
+                            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap"
+                                value="{{ $user->nama_lengkap }}">
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4">
+                        <div class="mb-6">
+                            <label for="nama_panggilan" class="form-label">Nama Panggilan</label>
+                            <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan"
+                                value="{{ $user->nama_panggilan }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-3">
                         <div class="mb-6">
                             <label for="level_id" class="form-label">Level Hak Akses</label>
                             <select id="level_id" name="level_id" class="select2 form-select form-select-lg"
                                 data-allow-clear="true">
                                 <option value="">-- Pilih Level --</option>
                                 @foreach ($levels as $lev)
-                                    <option value="{{ $lev->id }}"
-                                        {{ $karyawan->level_id == $lev->id ? 'selected' : '' }}>
+                                    <option value="{{ $lev->id }}" {{ $user->level_id == $lev->id ? 'selected' : '' }}>
                                         {{ $lev->nama }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label" for="tanggal_lahir">Tanggal Lahir</label>
                         <input type="text" id="tanggal_lahir" name="tanggal_lahir" class="form-control dob-picker"
-                            value="{{ $karyawan->tanggal_lahir }}" />
+                            value="{{ $user->tanggal_lahir }}" />
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label class="form-label d-block">Jenis Kelamin</label>
                             <div class="btn-group w-100" role="group">
                                 <input type="radio" class="btn-check" name="jenis_kelamin" id="laki" value="L"
-                                    {{ $karyawan->jenis_kelamin == 'L' ? 'checked' : '' }}>
+                                    {{ $user->jenis_kelamin == 'L' ? 'checked' : '' }}>
                                 <label class="btn btn-outline-secondary w-50" for="laki">Laki-laki</label>
                                 <input type="radio" class="btn-check" name="jenis_kelamin" id="perempuan" value="P"
-                                    {{ $karyawan->jenis_kelamin == 'P' ? 'checked' : '' }}>
+                                    {{ $user->jenis_kelamin == 'P' ? 'checked' : '' }}>
                                 <label class="btn btn-outline-secondary w-50" for="perempuan">Perempuan</label>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label for="telpon" class="form-label">No Telepon</label>
                             <input type="text" class="form-control" id="telpon" name="telpon"
-                                value="{{ $karyawan->telpon }}">
+                                value="{{ $user->telpon }}">
                         </div>
                     </div>
                 </div>
 
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="text" id="email" name="email" class="form-control"
+                            value="{{ $user->email }}" />
+                    </div>
+                    <div class="col-md-3">
                         <label class="form-label" for="tanggal_masuk">Tanggal Masuk</label>
                         <input type="text" id="tanggal_masuk" name="tanggal_masuk" class="form-control dob-picker"
-                            value="{{ $karyawan->tanggal_masuk }}" />
+                            value="{{ $user->tanggal_masuk }}" />
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label for="gaji" class="form-label">Satuan Gaji</label>
                             <input type="text" class="form-control" id="gaji" name="gaji"
-                                value="{{ number_format($karyawan->gaji, 0, ',', '.') }}">
+                                value="{{ number_format($user->gaji, 0, ',', '.') }}">
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label for="foto" class="form-label">Foto</label>
                             <input type="file" class="form-control" id="foto" name="foto"
                                 accept=".jpg,.jpeg,.png">
-                            {{-- @if ($karyawan->foto)
-                                <img src="{{ asset('storage/foto/' . $karyawan->foto) }}" alt="Foto Karyawan"
+                            {{-- @if ($user->foto)
+                                <img src="{{ asset('storage/foto/' . $user->foto) }}" alt="Foto Karyawan"
                                     class="img-thumbnail mt-1 rounded" width="120">
                             @endif --}}
                         </div>
@@ -100,7 +111,7 @@
                     <div class="col-12">
                         <div class="mb-6">
                             <label for="alamat" class="form-label">Alamat Lengkap</label>
-                            <textarea class="form-control" id="alamat" name="alamat" rows="1">{{ $karyawan->alamat }}</textarea>
+                            <textarea class="form-control" id="alamat" name="alamat" rows="1">{{ $user->alamat }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -110,7 +121,7 @@
                         <div class="mb-6">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username"
-                                value="{{ $karyawan->username }}">
+                                value="{{ $user->username }}">
                         </div>
                     </div>
                     <div class="col-6">
@@ -135,7 +146,7 @@
                 </div>
 
                 <div class="mb-0 d-flex justify-content-between align-items-center mt-4">
-                    <a href="/app/karyawan" class="btn btn-outline-secondary">
+                    <a href="/app/user" class="btn btn-outline-secondary">
                         <i class="icon-base bx bx-left-arrow-alt me-1"></i>
                         <span class="align-middle">Kembali</span>
                     </a>
@@ -153,13 +164,6 @@
 
 @section('script')
     <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        })
         $('#foto').on('change', function() {
             let f = this.files[0];
             if (f) {
@@ -221,7 +225,7 @@
                         });
 
                         setTimeout(() => {
-                            window.location.href = '/app/karyawan';
+                            window.location.href = '/app/user';
                         }, 1500);
                     }
                 },

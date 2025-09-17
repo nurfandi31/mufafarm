@@ -9,5 +9,5 @@ class Pembelian extends Model
 {
     use HasFactory;
     protected $table = 'pembelians';
-    protected $guarded = 'id';
+    protected $guarded = ['id'];
 }

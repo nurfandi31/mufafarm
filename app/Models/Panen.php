@@ -9,5 +9,10 @@ class Panen extends Model
 {
     use HasFactory;
     protected $table = 'panens';
-    protected $guarded = 'id';
+    protected $guarded = ['id'];
+
+    public function bibit()
+    {
+        return $this->belongsTo(Bibit::class, 'bibit_id', 'id');
+    }
 }

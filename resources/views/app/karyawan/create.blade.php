@@ -1,6 +1,6 @@
 @extends('app.layouts.app')
 @section('content')
-    <form action="/app/karyawan" method="post" id="FromKaryawan" enctype="multipart/form-data">
+    <form action="/app/user" method="post" id="FromKaryawan" enctype="multipart/form-data">
         @csrf
         <div class="card">
             <div class="card-header">
@@ -10,21 +10,30 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <div class="mb-6">
                             <label for="nik" class="form-label">Nik</label>
                             <input type="text" maxlength="16" class="form-control" id="nik" name="nik"
                                 placeholder="masukkan nik karyawan">
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <div class="mb-6">
-                            <label for="nama" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama" name="nama"
+                            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap"
                                 placeholder="masukkan nama karyawan">
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-4">
+                        <div class="mb-6">
+                            <label for="nama_panggilan" class="form-label">Nama Panggilan</label>
+                            <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan"
+                                placeholder="masukkan nama karyawan">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label for="level_id" class="form-label">Level Hak Akses</label>
                             <select id="level_id" name="level_id" class="select2 form-select form-select-lg"
@@ -36,14 +45,12 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label" for="tanggal_lahir">Tanggal Lahir</label>
                         <input type="text" id="tanggal_lahir" name="tanggal_lahir" class="form-control dob-picker"
                             placeholder="YYYY-MM-DD" value="{{ date('Y-m-d') }}">
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label class="form-label d-block">Jenis Kelamin</label>
                             <div class="btn-group w-100" role="group">
@@ -55,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label for="telpon" class="form-label">No Telepon</label>
                             <input type="text" class="form-control" id="telpon" name="telpon"
@@ -64,19 +71,24 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="text" id="email" name="email" class="form-control"
+                            placeholder="Masukkan email">
+                    </div>
+                    <div class="col-md-3">
                         <label class="form-label" for="tanggal_masuk">Tanggal Masuk</label>
                         <input type="text" id="tanggal_masuk" name="tanggal_masuk" class="form-control dob-picker"
                             placeholder="YYYY-MM-DD" value="{{ date('Y-m-d') }}">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="mb-6">
                             <label for="gaji" class="form-label">Satuan Gaji</label>
                             <input type="text" class="form-control" id="gaji" name="gaji"
                                 placeholder="masukkan satuan gaji">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label" for="foto">Foto</label>
                         <input type="file" id="foto" name="foto" class="form-control">
                     </div>
@@ -118,7 +130,7 @@
                     </div>
                 </div>
                 <div class="mb-0 d-flex justify-content-between align-items-center">
-                    <a href="/app/karyawan" class="btn btn-outline-secondary"><i
+                    <a href="/app/user" class="btn btn-outline-secondary"><i
                             class="icon-base bx bx-left-arrow-alt me-1"></i>Kembali</a>
                     <button type="button" id="simpanKaryawan" class="btn btn-primary ms-2"><i
                             class="icon-base bx bx-cloud-upload me-1"></i>Simpan</button>
@@ -129,13 +141,6 @@
 @endsection
 @section('script')
     <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        })
         $('#foto').on('change', function() {
             let f = this.files[0];
             if (f) {
@@ -196,7 +201,7 @@
                             if (res.isConfirmed) {
                                 window.location.reload()
                             } else {
-                                window.location.href = '/app/karyawan'
+                                window.location.href = '/app/user'
                             }
                         })
                     }

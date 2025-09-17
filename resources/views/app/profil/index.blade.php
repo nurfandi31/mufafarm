@@ -69,13 +69,11 @@
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="form_type" value="profil">
-                            <input type="hidden" name="mitra_id" value="{{ $profil->mitra_id }}">
-
                             <div class="mb-3">
-                                <label for="id_yayasan" class="form-label">kode Yayasan</label>
-                                <input type="text" class="form-control" id="id_yayasan" name="id_yayasan"
-                                    value="{{ $profil->id_yayasan ?? '' }}" placeholder="Masukkan ID Yayasan">
-                                <small class="text-danger" id="msg_id_yayasan"></small>
+                                <label for="kode" class="form-label">kode</label>
+                                <input type="text" class="form-control" id="kode" name="kode"
+                                    value="{{ $profil->kode ?? '' }}" placeholder="Masukkan kode">
+                                <small class="text-danger" id="msg_kode"></small>
                             </div>
 
                             <div class="mb-3">

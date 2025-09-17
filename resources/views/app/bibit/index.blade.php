@@ -5,18 +5,20 @@
         <div class="card-header pb-0">
             <div class="d-flex justify-content-end">
                 <button id="btnTambah" class="btn btn-primary">
-                    <i class="bx bx-plus"></i> Tambah Menu
+                    <i class="bx bx-plus"></i> Tambah Bibit
                 </button>
             </div>
         </div>
         <div class="card-datatable">
-            <table id="BahanP" class="dt-responsive-child table table-bordered">
+            <table id="Bibit" class="dt-responsive-child table table-bordered">
                 <thead>
                     <tr>
-                        <th>Kelompok Pangan</th>
-                        <th>Nama Bahan Pangan</th>
-                        <th>Satuan</th>
-                        <th>Harga</th>
+                        <th>Kolam</th>
+                        <th>Nama Bibit</th>
+                        <th>Jenis Bibit</th>
+                        <th>Tanggal Datang</th>
+                        <th>Jumlah Bibit</th>
+                        <th>Sumber</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -24,16 +26,17 @@
         </div>
     </div>
 
-    <form id="FormHapusBahanPangan" method="post">
+    <form id="FormHapusBibit" method="post">
         @method('DELETE')
         @csrf
     </form>
 
-    @include('app.Bahan-Pangan.modal')
+    @include('app.bibit.modal')
 @endsection
+
 @section('script')
     <script>
-        const tb = document.querySelector("#BahanP");
+        const tb = document.querySelector("#Bibit");
         let table;
 
         if (tb) {
@@ -41,26 +44,34 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/app/bahan-pangan",
+                    url: "/app/bibit",
                 },
                 columns: [{
-                        data: 'kelompok_pangan_nama',
-                        name: 'kelompok_pangan_nama'
+                        data: 'kolam.nama',
+                        name: 'kolam.nama'
                     },
                     {
                         data: 'nama',
                         name: 'nama'
                     },
                     {
-                        data: 'satuan',
-                        name: 'satuan'
+                        data: 'jenis',
+                        name: 'jenis'
                     },
                     {
-                        data: 'harga_jual',
-                        name: 'harga_jual',
-                        render: function(data) {
-                            return new Intl.NumberFormat('id-ID').format(data);
+                        data: 'tanggal_datang',
+                        name: 'tanggal_datang'
+                    }, {
+                        data: 'jumlah',
+                        name: 'jumlah',
+                        render: function(data, type, row) {
+                            const satuan = row.kolam ? row.kolam.kapasitas_bibit : '';
+                            return data + (satuan ? ' ' + satuan : '');
                         }
+                    },
+                    {
+                        data: 'sumber',
+                        name: 'sumber'
                     },
                     {
                         data: null,
@@ -68,88 +79,91 @@
                         searchable: false,
                         render: function(data) {
                             return `
-                        <div class="d-inline-flex gap-1">
-                            <button 
-                                class="btn btn-sm btn-primary btnEdit"
-                                data-id="${data.id}"
-                                data-nama="${data.nama}"
-                                data-harga_jual="${data.harga_jual}"
-                                data-satuan="${data.satuan}"
-                                data-kelompok_pangan_id="${data.kelompok_pangan_id}"
-                                data-kelompok_pangan_nama="${data.kelompok_pangan?.nama ?? ''}">
-                                Edit
-                            </button>
-
-                            <button class="btn btn-sm btn-danger btn-delete" data-id="${data.id}">
-                                Hapus
-                            </button>
-                        </div>`;
+                                <div class="d-inline-flex gap-1">
+                                    <button 
+                                        class="btn btn-sm btn-primary btnEdit"
+                                        data-id="${data.id}"
+                                        data-kolam_id="${data.kolam_id}"
+                                        data-nama="${data.nama}"
+                                        data-jenis="${data.jenis}"
+                                        data-tanggal_datang="${data.tanggal_datang}"
+                                        data-jumlah="${data.jumlah}"
+                                        data-sumber="${data.sumber}">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-danger btn-delete" data-id="${data.id}">
+                                        Hapus
+                                    </button>
+                                </div>`;
                         }
                     }
                 ],
             });
         }
 
-        // format input harga_jual
-        $("#harga_jual").on("input", function() {
-            let value = $(this).val().replace(/\D/g, "");
-            $(this).val(new Intl.NumberFormat("id-ID").format(value));
+        $(".dob-picker").not("#tanggal_awal").flatpickr({
+            monthSelectorType: "static",
+            appendTo: document.body,
+            onOpen: function(selectedDates, dateStr, instance) {
+                instance.calendarContainer.style.zIndex = 2000;
+            }
         });
 
-        // load kelompok pangan ke select
         $(document).ready(function() {
-            $.getJSON('/app/bahan-pangan/list', function(data) {
-                const select = $('#kelompok_pangan_id');
-                select.empty();
+            const kolamSelect = $('#kolam_id'); // dropdown kolam
+            const kapasitasButton = $('#kapasitas_bibit'); // tombol kapasitas
+
+            $.getJSON('/app/bibit/list', function(data) {
+                kolamSelect.empty();
+                kolamSelect.append('<option value="">Pilih Kolam</option>');
+
                 data.forEach(item => {
-                    select.append(`<option value="${item.id}">${item.nama}</option>`);
+                    kolamSelect.append(`
+                <option value="${item.id}" data-kapasitas="${item.kapasitas_bibit}">
+                    ${item.nama}
+                </option>
+            `);
                 });
             });
+
+            kolamSelect.on('change', function() {
+                const satuan = $(this).find('option:selected').data('kapasitas');
+                kapasitasButton.text(satuan || '');
+            });
         });
-        // tombol tambah
+
         $('#btnTambah').click(() => {
-            const form = $('#FormBahanPangan');
+            const form = $('#FormBibit');
             form.trigger('reset');
-            form.find('input[name="id_BP"]').val('');
-
-            form.attr('action', `/app/bahan-pangan`);
+            form.find('input[name="id_bibit"]').val('');
+            form.attr('action', `/app/bibit`);
             form.find('input[name="_method"]').remove();
-
-            $('#formTitle').text("Tambah Bahan Pangan").css('color', 'green');
-
-            const modal = new bootstrap.Modal(document.getElementById('BP-Pangan'));
+            $('#formTitle').text("Tambah Bibit Baru").css('color', 'green');
+            const modal = new bootstrap.Modal(document.getElementById('BibitModal'));
             modal.show();
         });
 
-        // tombol edit
         $(document).on('click', '.btnEdit', function() {
             let d = $(this).data();
-
-            const form = $('#FormBahanPangan');
-
-            $('#id_BP').val(d.id);
+            const form = $('#FormBibit');
+            $('#id_bibit').val(d.id);
             $('#nama').val(d.nama);
-            $('#satuan').val(d.satuan);
-            $('#harga_jual').val(d.harga_jual);
-
-            if (d.kelompok_pangan_id) {
-                $('#kelompok_pangan_id').val(d.kelompok_pangan_id).trigger('change');
-            } else {
-                $('#kelompok_pangan_id').val(null).trigger('change');
-            }
-
-            form.attr('action', `/app/bahan-pangan/${d.id}`);
+            $('#jenis').val(d.jenis).trigger('change');
+            $('#tanggal_datang').val(d.tanggal_datang).trigger('change');
+            $('#jumlah').val(d.jumlah);
+            $('#sumber').val(d.sumber);
+            $('#kolam_id').val(d.kolam_id).trigger('change');
+            form.attr('action', `/app/bibit/${d.id}`);
             form.find('input[name="_method"]').remove();
             form.append('<input type="hidden" name="_method" value="PUT">');
-            $('#formTitle').text("Edit Bahan Pangan").css('color', 'goldenrod');
-            const modal = new bootstrap.Modal(document.getElementById('BP-Pangan'));
+            $('#formTitle').text("Edit Bibit").css('color', 'goldenrod');
+            const modal = new bootstrap.Modal(document.getElementById('BibitModal'));
             modal.show();
         });
 
-        // simpan (tambah / edit)
-        $(document).on('click', '#SimpanBahanPangan', function(e) {
+        $(document).on('click', '#SimpanBibit', function(e) {
             e.preventDefault();
-            const form = $('#FormBahanPangan');
+            const form = $('#FormBibit');
             $('small').empty();
             $('.is-invalid').removeClass('is-invalid');
             const actionUrl = form.attr('action');
@@ -175,10 +189,10 @@
                             icon: 'success',
                             title: result.msg
                         });
-                        const modalEl = document.getElementById('BP-Pangan');
+                        const modalEl = document.getElementById('BibitModal');
                         const modalInstance = bootstrap.Modal.getInstance(modalEl);
                         modalInstance.hide();
-                        if (cl) cl.ajax.reload(null, false);
+                        if (table) table.ajax.reload(null, false);
                     } else {
                         Toast.fire({
                             icon: 'error',
@@ -203,21 +217,20 @@
             });
         });
 
-        // hapus
         $(document).on('click', '.btn-delete', function(e) {
             e.preventDefault();
             let id = $(this).data('id');
             Swal.fire({
                 title: "Apakah Anda yakin?",
-                text: "Data Bahan Pangan akan dihapus permanen!",
+                text: "Data Bibit akan dihapus permanen!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Ya, Hapus",
                 cancelButtonText: "Batal",
             }).then(res => {
                 if (res.isConfirmed) {
-                    let form = $('#FormHapusBahanPangan');
-                    form.attr('action', `/app/bahan-pangan/${id}`);
+                    let form = $('#FormHapusBibit');
+                    form.attr('action', `/app/bibit/${id}`);
                     $.ajax({
                         url: form.attr('action'),
                         type: 'POST',

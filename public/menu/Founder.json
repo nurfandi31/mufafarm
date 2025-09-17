@@ -1,0 +1,77 @@
+[{
+    "nama": "Dashboard",
+    "icon": "bx-home-smile",
+    "url": "/app/dashboard"
+}, {
+    "nama": "Master Data"
+}, {
+    "nama": "SOP",
+    "icon": "bx-cog",
+    "url": "/app/sop",
+    "children": [{
+        "nama": "Pengaturan",
+        "icon": "bx-group",
+        "url": "/app/pengaturan"
+    }, {
+        "nama": "Tanda Tangan",
+        "icon": "bx-leaf",
+        "url": "/app/ttd"
+    }, {
+        "nama": "Level",
+        "icon": "bx-leaf",
+        "url": "/app/level"
+    }]
+}, {
+    "nama": "Basis Data"
+}, {
+    "nama": "Karyawan",
+    "icon": "bx-user",
+    "url": "/app/karyawan",
+    "children": [{
+        "nama": "Create Pekerja",
+        "icon": "bx-group",
+        "url": "/app/user/create"
+    }, {
+        "nama": "Data Karyawan",
+        "icon": "bx-leaf",
+        "url": "/app/user"
+    }]
+}, {
+    "nama": "Kolam",
+    "icon": "bx-landscape",
+    "url": "/app/kolam"
+}, {
+    "nama": "Bibit",
+    "icon": "bx-dna",
+    "url": "/app/bibit"
+}, {
+    "nama": "Pakan",
+    "icon": "bx-bone",
+    "url": "/app/pakan"
+}, {
+    "nama": "Pemberian Pakan",
+    "icon": "bx-time-five",
+    "url": "/app/pemberian-pakan"
+}, {
+    "nama": "Master Akuntan"
+}, {
+    "nama": "Panen",
+    "icon": "bx-basket",
+    "url": "/app/panen"
+}, {
+    "nama": "Penjualan",
+    "icon": "bx-trending-up",
+    "url": "/app/penjualan"
+}, {
+    "nama": "Pembelian",
+    "icon": "bx-shopping-bag",
+    "url": "/app/pembelian"
+}, {
+    "nama": "Jurnal Transaksi",
+    "icon": "bx-book-content",
+    "url": "/app/keuangan"
+}, {
+    "nama": "Laporan",
+    "icon": "bx-food-menu",
+    "url": "/app/laporan"
+}]

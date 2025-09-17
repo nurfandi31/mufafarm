@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Level extends Model
 {
     use HasFactory;
+
+    protected $table = 'levels';
+    protected $guarded = ['id'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

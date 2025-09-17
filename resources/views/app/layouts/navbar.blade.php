@@ -1,5 +1,5 @@
 @php
-    $nama = auth()->user()->nama;
+    $nama = auth()->user()->nama_panjang;
     $level = auth()->user()->level->nama;
     $foto = auth()->user()->foto;
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\BibitController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\KolamController;
@@ -47,6 +48,33 @@ Route::get('/link', function () {
 Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
+    Route::resource('/profile', ProfilController::class);
+
+    Route::resource('/level', LevelController::class);
+
+    Route::get('/user/create', [UserController::class, 'create']);
+    Route::resource('/user', UserController::class);
+
+    Route::resource('/kolam', KolamController::class);
+
+    route::get('/bibit/list', [BibitController::class, 'list']);
+    Route::resource('/bibit', BibitController::class);
+
+    Route::resource('/pakan', PakanController::class);
+
+    route::get('/pp-bibit/list', [PemberianPakanController::class, 'bibitlist']);
+    route::get('/pp-pakan/list', [PemberianPakanController::class, 'pakanlist']);
+    Route::resource('/pemberian-pakan', PemberianPakanController::class);
+
+    Route::resource('/panen', PanenController::class);
+
+    Route::resource('/pembelian', PembelianController::class);
+
+    Route::resource('/penjualan', PenjualanController::class);
+
+    Route::resource('/keuangan', KeuanganController::class);
+
+    Route::resource('/presensi', PresensiController::class);
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });

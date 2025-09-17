@@ -2,15 +2,24 @@
 
 @section('content')
     <div class="card">
+        <div class="card-header pb-0">
+            <div class="d-flex justify-content-end">
+                <a href="/app/pembelian/create" class="btn btn-primary">
+                    <i class="bx bx-plus me-1"></i> Tambah Pembelian Baru
+                </a>
+            </div>
+        </div>
         <div class="card-datatable">
-            <table id="karyawan" class="dt-responsive-child table table-bordered">
+            <table id="pembelian" class="dt-responsive-child table table-bordered">
                 <thead>
                     <tr>
-                        <th>Nama Lengkap</th>
-                        <th>NIK</th>
-                        <th>Telepon</th>
-                        <th>Gaji</th>
-                        <th>Status</th>
+                        <th>Tanggal</th>
+                        <th>Jenis</th>
+                        <th>Nama Barang</th>
+                        <th>Jumlah</th>
+                        <th>Harga Satuan</th>
+                        <th>Total</th>
+                        <th>Supplier</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -18,16 +27,15 @@
         </div>
     </div>
 
-    <form id="FormHapusKaryawan" method="post">
+    <form id="FormHapusPembelian" method="post">
         @method('DELETE')
         @csrf
-
     </form>
 @endsection
 
 @section('script')
     <script>
-        const tb = document.querySelector("#karyawan");
+        const tb = document.querySelector("#pembelian");
         let cl;
 
         if (tb) {
@@ -35,48 +43,35 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/app/user",
+                    url: "/app/pembelian",
                 },
                 columns: [{
-                        data: 'nama_lengkap',
-                        name: 'nama_lengkap',
-                        render: function(data, type, row) {
-                            let src = row.foto_raw;
-                            return `
-                            <div class="d-flex align-items-center">
-                                <img src="${src}" alt="Foto" class="rounded-circle me-2" width="35" height="35">
-                                <span>${data}</span>
-                            </div>
-                        `;
-                        }
+                        data: 'tanggal',
+                        name: 'tanggal'
                     },
                     {
-                        data: 'nik',
-                        name: 'nik'
+                        data: 'jenis',
+                        name: 'jenis'
                     },
                     {
-                        data: 'telpon',
-                        name: 'telpon'
+                        data: 'nama_barang',
+                        name: 'nama_barang'
                     },
                     {
-                        data: 'gaji',
-                        name: 'gaji',
-                        render: function(data) {
-                            return new Intl.NumberFormat('id-ID').format(data);
-                        }
+                        data: 'jumlah',
+                        name: 'jumlah'
                     },
                     {
-                        data: 'status',
-                        name: 'status',
-                        render: function(data) {
-                            if (data === 'aktif') {
-                                return '<span class="badge bg-success">Aktif</span>';
-                            } else if (data === 'nonaktif') {
-                                return '<span class="badge bg-danger">Nonaktif</span>';
-                            } else {
-                                return '<span class="badge bg-secondary">Tidak Diketahui</span>';
-                            }
-                        }
+                        data: 'harga_satuan',
+                        name: 'harga_satuan'
+                    },
+                    {
+                        data: 'total',
+                        name: 'total'
+                    },
+                    {
+                        data: 'supplier',
+                        name: 'supplier'
                     },
                     {
                         data: null,
@@ -84,7 +79,7 @@
                         searchable: false,
                         render: function(data) {
                             return `<div class="d-inline-flex gap-1">
-                                <a href="/app/user/${data.id}/edit" class="btn btn-sm btn-primary" title="Edit">
+                                <a href="/app/pembelian/${data.id}/edit" class="btn btn-sm btn-primary" title="Edit">
                                     Edit
                                 </a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="${data.id}" title="Hapus">
@@ -94,7 +89,7 @@
                         }
                     }
                 ]
-            })
+            });
         }
 
         // delete
@@ -104,15 +99,15 @@
 
             Swal.fire({
                 title: "Apakah Anda yakin?",
-                text: "Data karyawan akan dihapus permanen!",
+                text: "Data Pembelian akan dihapus permanen!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Ya, Hapus",
                 cancelButtonText: "Batal",
             }).then(res => {
                 if (res.isConfirmed) {
-                    let form = $('#FormHapusKaryawan');
-                    form.attr('action', `/app/user/${id}`);
+                    let form = $('#FormHapusPembelian');
+                    form.attr('action', `/app/pembelian/${id}`);
                     form.off('submit').on('submit', function(e) {
                         e.preventDefault();
                         $.ajax({
@@ -121,9 +116,9 @@
                             data: form.serialize(),
                             success: function(r) {
                                 Swal.fire("Berhasil!", r.message, "success").then(
-                                    () => {
-                                        cl.ajax.reload();
-                                    });
+                            () => {
+                                    cl.ajax.reload();
+                                });
                             },
                             error: function(xhr) {
                                 let msg = xhr.responseJSON?.message ||

@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kolam;
+use App\Models\Kolam;
+use App\Models\Bibit;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
 
 class KolamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = Kolam::get();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('app.kolam.index', ['title' => 'Kolam']);
     }
 
     /**
@@ -28,7 +40,37 @@ class KolamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->only([
+            'nama',
+            'type',
+            'kapasitas_bibit',
+            'lokasi_kolam',
+        ]);
+        $rules = [
+            'nama'              => 'required',
+            'type'              => 'required',
+            'kapasitas_bibit'   => 'required',
+            'lokasi_kolam'      => 'required',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $kolam = Kolam::create([
+            'nama'              => $request->nama,
+            'type'              => $request->type,
+            'kapasitas_bibit'   => $request->kapasitas_bibit,
+            'lokasi_kolam'      => $request->lokasi_kolam,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Kolam berhasil ditambahkan',
+            'data' => $kolam,
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -52,7 +94,37 @@ class KolamController extends Controller
      */
     public function update(Request $request, kolam $kolam)
     {
-        //
+        $data = $request->only([
+            'nama',
+            'type',
+            'kapasitas_bibit',
+            'lokasi_kolam',
+        ]);
+        $rules = [
+            'nama'              => 'required',
+            'type'              => 'required',
+            'kapasitas_bibit'   => 'required',
+            'lokasi_kolam'      => 'required',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $kolam->update([
+            'nama'              => $request->nama,
+            'type'              => $request->type,
+            'kapasitas_bibit'   => $request->kapasitas_bibit,
+            'lokasi_kolam'      => $request->lokasi_kolam,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Kolam berhasil diubah',
+            'data' => $kolam,
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -60,6 +132,17 @@ class KolamController extends Controller
      */
     public function destroy(kolam $kolam)
     {
-        //
+        if (Bibit::where('kolam_id', $kolam->id)->exists()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Data tidak bisa dihapus karena sudah dipakai di data Bibit.'
+            ], 400);
+        }
+        $kolam->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Kolam berhasil dihapus',
+        ], Response::HTTP_OK);
     }
 }

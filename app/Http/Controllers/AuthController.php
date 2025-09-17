@@ -25,7 +25,7 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-                    return redirect('/app/dashboard')->with('success', 'Anda berhasil masuk');
+                    return redirect('/app/dashboard')->with('success', 'Selamat datang ' . $user->nama_lengkap);
                 }
             }
         }

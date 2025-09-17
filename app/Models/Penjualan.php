@@ -9,5 +9,5 @@ class Penjualan extends Model
 {
     use HasFactory;
     protected $table = 'penjualans';
-    protected $guarded = 'id';
+    protected $guarded = ['id'];
 }
