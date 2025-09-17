@@ -19,6 +19,7 @@
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet" />
 
+    <link rel="stylesheet" href="/assets/vendor/libs/sweetalert2/sweetalert2.css" />
     <link rel="stylesheet" href="/assets/vendor/fonts/iconify-icons.css" />
     <link rel="stylesheet" href="/assets/vendor/css/pages/page-auth.css" />
     <link rel="stylesheet" href="/assets/vendor/css/core.css" />
@@ -83,7 +84,34 @@
         </div>
     </div>
 
-    <!-- / Content -->
+    <!-- SweetAlert2 CDN jika belum ada -->
+    <script src="/assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        const flash = @json(session()->only(['success', 'error']));
+
+        for (const [type, msg] of Object.entries(flash)) {
+            if (msg) {
+                Toast.fire({
+                    icon: type === 'success' ? 'success' : 'error',
+                    title: msg
+                });
+            }
+        }
+    </script>
+
+
 
     <script src="/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="/assets/vendor/libs/popper/popper.js"></script>

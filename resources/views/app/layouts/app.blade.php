@@ -109,12 +109,9 @@
         <div class="layout-overlay layout-menu-toggle"></div>
         <div class="drag-target"></div>
     </div>
-    <!-- / Layout wrapper -->
-
     <form action="/app/auth/logout" method="post" id="formLogout">
         @csrf
     </form>
-
     <script src="/assets/vendor/libs/jquery/jquery.js"></script>
     <script src="/assets/vendor/libs/popper/popper.js"></script>
     <script src="/assets/vendor/js/bootstrap.js"></script>
@@ -132,14 +129,39 @@
     <script src="/assets/vendor/js/menu.js"></script>
     <script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
     <script src="/assets/vendor/libs/select2/select2.js"></script>
-    <script src="/assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
     <script src="/assets/vendor/libs/flatpickr/flatpickr.js"></script>
     <script src="/assets/vendor/libs/datatables/datatables-bootstrap5.js"></script>
     <script src="/assets/vendor/libs/tagify/tagify.js"></script>
-    {{-- <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script> --}}
-    {{-- <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script> --}}
     <script src="/assets/js/form-select.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
+
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        // Ambil flash session dari Laravel
+        const flash = @json(session()->only(['success', 'error']));
+
+        for (const [type, msg] of Object.entries(flash)) {
+            if (msg) {
+                Toast.fire({
+                    icon: type === 'success' ? 'success' : 'error',
+                    title: msg
+                });
+            }
+        }
+    </script>
+
 
     <script>
         $(".nominal").maskMoney({

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\BibitController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\KolamController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\PanenController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PemberianPakanController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,4 +46,7 @@ Route::get('/link', function () {
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
+
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
