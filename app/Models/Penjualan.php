@@ -10,4 +10,9 @@ class Penjualan extends Model
     use HasFactory;
     protected $table = 'penjualans';
     protected $guarded = ['id'];
+
+    public function panen()
+    {
+        return $this->belongsTo(Panen::class, 'panen_id');
+    }
 }

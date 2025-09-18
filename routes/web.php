@@ -69,8 +69,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
     Route::resource('/panen', PanenController::class);
 
     Route::resource('/pembelian', PembelianController::class);
-
+    // Route khusus Ajax ambil data panen
+    Route::get('/panen/detail/{id}', [PenjualanController::class, 'getPanen']);
     Route::resource('/penjualan', PenjualanController::class);
+
 
     Route::resource('/keuangan', KeuanganController::class);
 

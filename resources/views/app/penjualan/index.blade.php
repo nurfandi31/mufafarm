@@ -4,19 +4,21 @@
     <div class="card">
         <div class="card-header pb-0">
             <div class="d-flex justify-content-end">
-                <a href="/app/panen/create" class="btn btn-primary">
-                    <i class="bx bx-plus me-1"></i> Tambah Panen Baru
+                <a href="/app/penjualan/create" class="btn btn-primary">
+                    <i class="bx bx-plus me-1"></i> Tambah Penjualan Baru
                 </a>
             </div>
         </div>
         <div class="card-datatable">
-            <table id="panen" class="dt-responsive-child table table-bordered">
+            <table id="penjualan" class="dt-responsive-child table table-bordered">
                 <thead>
                     <tr>
-                        <th>Bibit</th>
-                        <th>Tanggal Panen</th>
+                        <th>Panen</th>
+                        <th>Tanggal</th>
                         <th>Jumlah</th>
-                        <th>Berat Total</th>
+                        <th>Jumlah Ekor</th>
+                        <th>Harga Satuan</th>
+                        <th>Total</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -24,7 +26,7 @@
         </div>
     </div>
 
-    <form id="FormHapuspanen" method="post">
+    <form id="FormHapusPenjualan" method="post">
         @method('DELETE')
         @csrf
 
@@ -33,7 +35,7 @@
 
 @section('script')
     <script>
-        const tb = document.querySelector("#panen");
+        const tb = document.querySelector("#penjualan");
         let cl;
 
         if (tb) {
@@ -41,22 +43,42 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "/app/panen",
+                    url: "/app/penjualan",
                 },
                 columns: [{
-                        data: 'bibit.nama',
-                        name: 'bibit.nama',
+                        data: 'panen.bibit.nama',
+                        name: 'panen.bibit.nama',
                     },
                     {
-                        data: 'tanggal_panen',
-                        name: 'tanggal_panen'
+                        data: 'tanggal',
+                        name: 'tanggal'
                     },
                     {
                         data: 'jumlah',
-                        name: 'jumlah'
+                        name: 'jumlah',
+                        render: function(data, type, row) {
+                            const kapasitas_bibit = row.panen.bibit.kolam ? row.panen.bibit.kolam
+                                .kapasitas_bibit : '';
+                            return data + (kapasitas_bibit ? ' ' + kapasitas_bibit : '');
+                        }
                     }, {
-                        data: 'berat_total',
-                        name: 'berat_total',
+                        data: 'jumlah_ekor',
+                        name: 'jumlah_ekor',
+                    }, {
+                        data: 'harga_satuan',
+                        name: 'harga_satuan',
+                        render: function(data, type, row) {
+                            if (data === null) return '';
+                            return Number(data).toLocaleString('id-ID');
+                        }
+                    },
+                    {
+                        data: 'total',
+                        name: 'total',
+                        render: function(data, type, row) {
+                            if (data === null) return '';
+                            return Number(data).toLocaleString('id-ID');
+                        }
                     },
                     {
                         data: null,
@@ -64,7 +86,7 @@
                         searchable: false,
                         render: function(data) {
                             return `<div class="d-inline-flex gap-1">
-                                <a href="/app/panen/${data.id}/edit" class="btn btn-sm btn-primary" title="Edit">
+                                <a href="/app/penjualan/${data.id}/edit" class="btn btn-sm btn-primary" title="Edit">
                                     Edit
                                 </a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="${data.id}" title="Hapus">
@@ -84,34 +106,35 @@
 
             Swal.fire({
                 title: "Apakah Anda yakin?",
-                text: "Data Panen akan dihapus permanen!",
+                text: "Data Penjualan akan dihapus permanen!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Ya, Hapus",
                 cancelButtonText: "Batal",
             }).then(res => {
                 if (res.isConfirmed) {
-                    let form = $('#FormHapuspanen');
-                    form.attr('action', `/app/panen/${id}`);
-                    form.off('submit').on('submit', function(e) {
-                        e.preventDefault();
-                        $.ajax({
-                            url: form.attr('action'),
-                            type: 'POST',
-                            data: form.serialize(),
-                            success: function(r) {
-                                Swal.fire("Berhasil!", r.message, "success").then(
-                                    () => {
-                                        cl.ajax.reload();
-                                    });
-                            },
-                            error: function(xhr) {
-                                let msg = xhr.responseJSON?.message ||
-                                    "Terjadi kesalahan pada server.";
-                                Swal.fire("Gagal!", msg, "error");
-                            }
+                    let form = $('#FormHapuspaPenjualan');
+                    form.attr('action', `/app/penjualan/${id}`);
+                    form.off('submit').on('submit',
+                        function(e) {
+                            e.preventDefault();
+                            $.ajax({
+                                url: form.attr('action'),
+                                type: 'POST',
+                                data: form.serialize(),
+                                success: function(r) {
+                                    Swal.fire("Berhasil!", r.message, "success").then(
+                                        () => {
+                                            cl.ajax.reload();
+                                        });
+                                },
+                                error: function(xhr) {
+                                    let msg = xhr.responseJSON?.message ||
+                                        "Terjadi kesalahan pada server.";
+                                    Swal.fire("Gagal!", msg, "error");
+                                }
+                            });
                         });
-                    });
                     form.trigger('submit');
                 }
             });

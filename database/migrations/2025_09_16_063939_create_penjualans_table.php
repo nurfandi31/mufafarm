@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Panen::class);
             $table->date('tanggal');
             $table->string('harga_satuan');
+            $table->string('jumlah');
             $table->string('total');
             $table->string('pembeli');
             $table->timestamps();

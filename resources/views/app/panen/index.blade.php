@@ -17,6 +17,7 @@
                         <th>Tanggal Panen</th>
                         <th>Jumlah</th>
                         <th>Berat Total</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -54,9 +55,22 @@
                     {
                         data: 'jumlah',
                         name: 'jumlah'
-                    }, {
+                    },
+                    {
                         data: 'berat_total',
-                        name: 'berat_total',
+                        name: 'berat_total'
+                    }, {
+                        data: 'status',
+                        name: 'status',
+                        render: function(data, type, row) {
+                            if (data === 'ready') {
+                                return '<span class="badge bg-success">Ready</span>';
+                            } else if (data === 'habis') {
+                                return '<span class="badge bg-warning">Habis</span>';
+                            } else {
+                                return '<span class="badge bg-secondary">Belum Diketahui</span>';
+                            }
+                        }
                     },
                     {
                         data: null,

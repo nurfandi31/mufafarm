@@ -1,72 +1,90 @@
 @extends('app.layouts.app')
 
 @section('content')
-    <form action="/app/panen/{{ $panen->id }}" method="post" id="FormPanenEdit">
+    <form action="/app/penjualan/{{ $penjualan->id }}" method="post" id="FormPenjualan">
         @csrf
-        @method('PUT') {{-- Untuk update --}}
+        @method('PUT')
         <div class="card">
             <div class="card-header">
                 <div class="card-title mb-0">
-                    <p class="card-subtitle">Edit Data Panen</p>
+                    <p class="card-subtitle">Edit Data Penjualan</p>
                 </div>
             </div>
             <div class="card-body">
-
                 <div class="row">
-                    <!-- Select Bibit & Kolam -->
-                    <div class="col-md-6">
-                        <div class="mb-6">
-                            <label for="bibit_id" class="form-label">Bibit & Kolam</label>
-                            <select id="bibit_id" name="bibit_id" class="select2 form-select">
-                                <option value="">-- Pilih Bibit --</option>
-                                @foreach ($bibit as $p)
-                                    <option value="{{ $p->id }}" data-kapasitas="{{ $p->kolam->kapasitas_bibit }}"
-                                        {{ $p->id == $panen->bibit_id ? 'selected' : '' }}>
-                                        {{ $p->nama }} - ({{ $p->kolam->nama }})
+                    <div class="col-md-6 col-12">
+                        <div class="mb-3">
+                            <label for="tanggal" class="form-label">Tanggal</label>
+                            <input type="text" id="tanggal" name="tanggal" class="form-control dob-picker"
+                                placeholder="YYYY-MM-DD" value="{{ $penjualan->tanggal }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="mb-3">
+                            <label for="panen_id" class="form-label">Pilih Panen</label>
+                            <select id="panen_id" name="panen_id" class="form-control select2">
+                                <option value="">-- Pilih Panen --</option>
+                                @foreach ($panen as $p)
+                                    <option value="{{ $p->id }}"
+                                        {{ $penjualan->panen_id == $p->id ? 'selected' : '' }}>
+                                        {{ $p->bibit->nama }} - {{ $p->tanggal_panen }}
+                                        @if ($p->status === 'ready')
+                                            (🟢 Ready)
+                                        @elseif($p->status === 'habis')
+                                            (🔴 Habis)
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
 
-                    <!-- Tanggal Panen -->
-                    <div class="col-md-6">
-                        <div class="mb-6">
-                            <label for="tanggal_panen" class="form-label">Tanggal Panen</label>
-                            <input type="text" id="tanggal_panen" name="tanggal_panen" class="form-control dob-picker"
-                                placeholder="YYYY-MM-DD" value="{{ date('Y-m-d', strtotime($panen->tanggal_panen)) }}">
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-6">
-                            <label for="jumlah" class="form-label">Jumlah Ekor Panen</label>
+                    <div class="col-md-6 col-12">
+                        <div class="mb-3">
+                            <label for="pembeli" class="form-label">Nama Pembeli</label>
+                            <input type="text" id="pembeli" name="pembeli" class="form-control"
+                                value="{{ $penjualan->pembeli }}" placeholder="Masukkan nama pembeli">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="mb-3">
+                            <label for="jumlah" class="form-label">Jumlah (kg)</label>
                             <input type="number" step="0.01" id="jumlah" name="jumlah" class="form-control"
-                                placeholder="Masukkan jumlah panen" value="{{ $panen->jumlah }}">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-6">
-                            <label class="form-label" for="berat_total">Berat Total (kg)</label>
-                            <div class="input-group">
-                                <input type="number" id="berat_total" name="berat_total" class="form-control"
-                                    placeholder="Berat total panen" value="{{ $panen->berat_total }}" />
-                                <button class="btn btn-outline-secondary" type="button" id="kapasitas_bibit" disabled>
-                                    {{ $panen->bibit->kolam->kapasitas_bibit ?? 0 }}
-                                </button>
-                            </div>
-                            <small id="msg_berat_total" class="text-muted">Kapasitas kolam</small>
+                                value="{{ $penjualan->jumlah }}" placeholder="Masukkan jumlah">
                         </div>
                     </div>
                 </div>
-
-                <div class="mb-0 d-flex justify-content-between">
-                    <a href="/app/panen" class="btn btn-outline-secondary">Kembali</a>
-                    <button type="button" id="simpanPanenEdit" class="btn btn-primary">Simpan</button>
+                <div class="row">
+                    <div class="col-md-4 col-12">
+                        <div class="mb-3">
+                            <label for="jumlah_ekor" class="form-label">Jumlah Ekor</label>
+                            <input type="text" id="jumlah_ekor" name="jumlah_ekor" class="form-control"
+                                value="{{ $penjualan->jumlah_ekor }}" placeholder="Jumlah Ekor" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <div class="mb-3">
+                            <label for="harga_satuan" class="form-label">Harga Satuan</label>
+                            <input type="text" id="harga_satuan" name="harga_satuan" class="form-control"
+                                value="{{ number_format($penjualan->harga_satuan, 0, ',', '.') }}"
+                                placeholder="Masukkan harga satuan">
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <div class="mb-3">
+                            <label for="total" class="form-label">Total</label>
+                            <input type="text" id="total" name="total" class="form-control"
+                                value="{{ number_format($penjualan->total, 0, ',', '.') }}" placeholder="Total harga"
+                                readonly>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="d-flex justify-content-between">
+                    <a href="/app/penjualan" class="btn btn-outline-secondary">Kembali</a>
+                    <button type="button" id="simpanPenjualan" class="btn btn-primary">Update</button>
+                </div>
             </div>
         </div>
     </form>
@@ -74,54 +92,99 @@
 
 @section('script')
     <script>
-        // Flatpickr
         $(".dob-picker").flatpickr({
-            monthSelectorType: "static"
+            monthSelectorType: "static",
+            dateFormat: "Y-m-d"
         });
 
-        // Saat pilih bibit, tampilkan kapasitas kolam
-        $('#bibit_id').on('change', function() {
-            let kapasitas = $(this).find(':selected').data('kapasitas') || 0;
-            $('#kapasitas_bibit').text(kapasitas);
+        function formatNumber(value) {
+            value = value.toString().replace(/\D/g, "");
+            return new Intl.NumberFormat("id-ID").format(value);
+        }
+
+        function hitungTotal() {
+            let jumlah = parseFloat($('#jumlah').val()) || 0;
+            let harga = parseFloat($('#harga_satuan').val().replace(/\D/g, "")) || 0;
+            let total = jumlah * harga;
+            $('#total').val(total.toLocaleString('id-ID'));
+        }
+
+        function hitungJumlahEkor() {
+            let panenId = $('#panen_id').val();
+            let jumlahKg = parseFloat($('#jumlah').val()) || 0;
+
+            if (panenId && jumlahKg > 0) {
+                $.ajax({
+                    url: '/app/panen/detail/' + panenId,
+                    type: 'GET',
+                    success: function(r) {
+                        if (r.success) {
+                            let stokJumlah = Number(r.data.jumlah) || 0; // total ekor di stok
+                            let stokBerat = Number(r.data.berat_total) || 0; // total kg di stok
+
+                            // cek jika jumlah melebihi stok berat
+                            if (jumlahKg > stokBerat) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Jumlah Melebihi Stok!',
+                                    text: `Jumlah yang dimasukkan (${jumlahKg} kg) melebihi berat total panen (${stokBerat} kg).`,
+                                });
+                                $('#jumlah_ekor').val('');
+                                return; // hentikan perhitungan
+                            }
+
+                            if (stokJumlah > 0 && stokBerat > 0) {
+                                let ekorPerKg = stokJumlah / stokBerat;
+                                let jumlahEkor = Math.ceil(jumlahKg * ekorPerKg);
+
+                                $('#jumlah_ekor').val(jumlahEkor.toLocaleString('id-ID'));
+                            } else {
+                                $('#jumlah_ekor').val('');
+                            }
+                        }
+                    }
+                });
+            } else {
+                $('#jumlah_ekor').val('');
+            }
+        }
+
+
+        $('#harga_satuan').on('input', function() {
+            $(this).val(formatNumber($(this).val()));
+            hitungTotal();
         });
 
-        // AJAX Update Panen
-        $(document).on('click', '#simpanPanenEdit', function(e) {
+        $('#jumlah').on('input', function() {
+            hitungTotal();
+            hitungJumlahEkor();
+        });
+
+        $('#panen_id').on('change', function() {
+            hitungJumlahEkor();
+        });
+
+        $(document).on('click', '#simpanPenjualan', function(e) {
             e.preventDefault();
-            let f = $('#FormPanenEdit')[0],
-                fd = new FormData(f),
-                url = $('#FormPanenEdit').attr('action');
+            let f = $('#FormPenjualan')[0];
+            let fd = new FormData(f);
+            let url = f.action;
 
             $.ajax({
-                type: 'POST', // tetap POST, method override PUT
+                type: 'POST',
                 url: url,
                 data: fd,
                 processData: false,
                 contentType: false,
                 success: function(r) {
                     if (r.success) {
-                        // Menggunakan Toast
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener('mouseenter', Swal.stopTimer);
-                                toast.addEventListener('mouseleave', Swal.resumeTimer);
-                            }
-                        });
-
-                        Toast.fire({
-                            icon: 'success',
-                            title: r.msg
-                        }).then(() => {
-                            window.location.href = '/app/panen';
-                        });
+                        Swal.fire('Sukses', r.msg, 'success')
+                            .then(() => window.location.href = '/app/penjualan');
+                    } else {
+                        Swal.fire('Error', r.msg || 'Terjadi kesalahan', 'error');
                     }
                 },
-                error: function(r) {
+                error: function() {
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error');
                 }
             });

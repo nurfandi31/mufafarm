@@ -74,6 +74,7 @@ class PanenController extends Controller
             'jumlah'        => $request->jumlah,
             'berat_total'   => $request->berat_total,
             'tanggal_panen' => $request->tanggal_panen,
+            'status'        => 'ready',
         ]);
 
         return response()->json([
@@ -130,6 +131,7 @@ class PanenController extends Controller
             'jumlah'        => $request->jumlah,
             'berat_total'   => $request->berat_total,
             'tanggal_panen' => $request->tanggal_panen,
+            'status'        => 'ready',
         ]);
 
         return response()->json([
