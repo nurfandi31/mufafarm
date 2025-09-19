@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\BibitController;
 use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\KolamController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\PakanController;
@@ -73,8 +74,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
     Route::get('/panen/detail/{id}', [PenjualanController::class, 'getPanen']);
     Route::resource('/penjualan', PenjualanController::class);
 
-
     Route::resource('/keuangan', KeuanganController::class);
+
+    Route::resource('/transaksi', TransaksiController::class);
 
     Route::resource('/presensi', PresensiController::class);
 

@@ -9,14 +9,6 @@
     "icon": "bx-cog",
     "url": "/app/sop",
     "children": [{
-        "nama": "Pengaturan",
-        "icon": "bx-group",
-        "url": "/app/pengaturan"
-    }, {
-        "nama": "Tanda Tangan",
-        "icon": "bx-leaf",
-        "url": "/app/ttd"
-    }, {
         "nama": "Level",
         "icon": "bx-leaf",
         "url": "/app/level"
@@ -69,7 +61,7 @@
 }, {
     "nama": "Jurnal Transaksi",
     "icon": "bx-book-content",
-    "url": "/app/keuangan"
+    "url": "/app/transaksi"
 }, {
     "nama": "Laporan",
     "icon": "bx-food-menu",

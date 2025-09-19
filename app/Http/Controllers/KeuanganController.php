@@ -12,8 +12,7 @@ class KeuanganController extends Controller
      */
     public function index()
     {
-        $title = 'Jurnal Transaksi';
-        return view('app.transaksi.index', compact('title'));
+        //
     }
 
     /**

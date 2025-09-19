@@ -3,122 +3,169 @@
 namespace App\Utils;
 
 use Carbon\Carbon;
-use App\Utils\Keuangan; // pastikan class Keuangan ada
 
 class Tanggal
 {
-    // Format tanggal Indonesia
+
     public function tglIndo($tanggal, $format = 'DD/MM/YYYY')
     {
         if ($tanggal != '') {
-            try {
-                $tgl = Carbon::parse($tanggal);
-                return $tgl->isoFormat($format);
-            } catch (\Exception $e) {
-                return date('d/m/Y');
+            $array_tgl = explode('-', $tanggal);
+            $tahun = $array_tgl[0];
+            $bulan = $array_tgl[1];
+            $hari = $array_tgl[2];
+
+            if (strlen($hari) > 0 && strlen($bulan) > 0) {
+                $tanggal = $tahun . '-' . $bulan . '-' . $hari;
+            } elseif (strlen($bulan) > 0) {
+                $tanggal = $tahun . '-' . $bulan . '-01';
+            } else {
+                $tanggal = $tahun . '-12-31';
             }
+            $tgl = new Carbon($tanggal);
+
+            return $tgl->isoFormat($format);
         }
+
         return date('d/m/Y');
     }
 
-    // Format tanggal nasional Y-m-d
     public function tglNasional($tanggal)
     {
-        try {
-            $tgl = Carbon::createFromFormat('d/m/Y', $tanggal);
-            return $tgl->format('Y-m-d');
-        } catch (\Exception $e) {
-            return null;
-        }
+        $tgl = Carbon::createFromFormat('d/m/Y', $tanggal)->format('Y-m-d');
+        return $tgl;
     }
 
-    // Format bulan/tanggal romawi, misal 15/07/2025 -> VII/2025
     public function tglRomawi($tanggal)
     {
-        $keuangan = new Keuangan();
-        try {
-            $tgl = Carbon::parse($tanggal);
-            $bulan_rom = $keuangan->romawi($tgl->format('m'));
-            $tahun = $tgl->format('Y');
-            return $bulan_rom . '/' . $tahun;
-        } catch (\Exception $e) {
-            return null;
-        }
+        $keuangan = new Keuangan;
+        $array_tgl = explode('-', $tanggal);
+        $tahun = $array_tgl[0];
+        $bulan = $array_tgl[1];
+        $hari = $array_tgl[2];
+
+        $bulan_rom = $keuangan->romawi($bulan);
+        $hari_rom = $keuangan->romawi($hari);
+
+        return $bulan_rom . '/' . $tahun;
     }
 
-    // Format Latin: 15 Juli 2025
     public function tglLatin($tanggal)
     {
-        try {
-            $tgl = Carbon::parse($tanggal);
-            $hari = $tgl->format('d');
-            $bulan = $this->namaBulan($tgl->format('Y-m-d'));
-            $tahun = $tgl->format('Y');
-            return $hari . ' ' . $bulan . ' ' . $tahun;
-        } catch (\Exception $e) {
-            return null;
-        }
+        $tgl = explode('-', $tanggal);
+
+        return $tgl[2] . ' ' . $this->namaBulan($tanggal) . ' ' . $tgl[0];
     }
 
     public function tahun($tanggal)
     {
-        try {
-            $tgl = Carbon::parse($tanggal);
-            return $tgl->format('Y');
-        } catch (\Exception $e) {
-            return null;
-        }
+        $tgl = explode('-', $tanggal);
+        $thn = $tgl[0];
+
+        return $thn;
     }
 
     public function bulan($tanggal)
     {
-        try {
-            $tgl = Carbon::parse($tanggal);
-            return $tgl->format('m');
-        } catch (\Exception $e) {
-            return null;
-        }
+        $tgl = explode('-', $tanggal);
+        $bln = $tgl[1];
+
+        return $bln;
     }
 
     public function namaBulan($tanggal)
     {
-        $bln = $this->bulan($tanggal);
-        $arrayBulan = [
-            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret',
-            '04' => 'April', '05' => 'Mei', '06' => 'Juni',
-            '07' => 'Juli', '08' => 'Agustus', '09' => 'September',
-            '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
-        ];
-        return $arrayBulan[$bln] ?? 'Tidak diketahui';
+        $tgl = explode('-', $tanggal);
+        $bln = $tgl[1];
+
+        switch ($bln) {
+            case '01':
+                $bulan = 'Januari';
+                break;
+            case '02':
+                $bulan = 'Februari';
+                break;
+            case '03':
+                $bulan = 'Maret';
+                break;
+            case '04':
+                $bulan = 'April';
+                break;
+            case '05':
+                $bulan = 'Mei';
+                break;
+            case '06':
+                $bulan = 'Juni';
+                break;
+            case '07':
+                $bulan = 'Juli';
+                break;
+            case '08':
+                $bulan = 'Agustus';
+                break;
+            case '09':
+                $bulan = 'September';
+                break;
+            case '10':
+                $bulan = 'Oktober';
+                break;
+            case '11':
+                $bulan = 'November';
+                break;
+            case '12':
+                $bulan = 'Desember';
+                break;
+        }
+
+        return $bulan;
     }
 
     public function hari($tanggal)
     {
-        try {
-            $tgl = Carbon::parse($tanggal);
-            return $tgl->format('d');
-        } catch (\Exception $e) {
-            return null;
-        }
+        $tgl = explode('-', $tanggal);
+        $hari = $tgl[2];
+
+        return $hari;
     }
 
     public function namaHari($tanggal)
     {
-        try {
-            $tgl = Carbon::parse($tanggal);
-            $hari = $tgl->format('D'); // Sun, Mon, ...
-            $arrayHari = [
-                'Sun' => 'Minggu',
-                'Mon' => 'Senin',
-                'Tue' => 'Selasa',
-                'Wed' => 'Rabu',
-                'Thu' => 'Kamis',
-                'Fri' => 'Jumat',
-                'Sat' => 'Sabtu'
-            ];
-            return $arrayHari[$hari] ?? 'Tidak diketahui';
-        } catch (\Exception $e) {
-            return 'Tidak diketahui';
+        $hari = date('D', strtotime($tanggal));
+
+        switch ($hari) {
+            case 'Sun':
+                $nama = "Minggu";
+                break;
+
+            case 'Mon':
+                $nama = "Senin";
+                break;
+
+            case 'Tue':
+                $nama = "Selasa";
+                break;
+
+            case 'Wed':
+                $nama = "Rabu";
+                break;
+
+            case 'Thu':
+                $nama = "Kamis";
+                break;
+
+            case 'Fri':
+                $nama = "Jumat";
+                break;
+
+            case 'Sat':
+                $nama = "Sabtu";
+                break;
+
+            default:
+                $nama = "Tidak di ketahui";
+                break;
         }
+
+        return $nama;
     }
 }
