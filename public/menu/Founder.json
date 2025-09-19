@@ -12,6 +12,10 @@
         "nama": "Level",
         "icon": "bx-leaf",
         "url": "/app/level"
+    }, {
+        "nama": "Dokumentasi Kegiatan",
+        "icon": "bx-book",
+        "url": "/app/dokumentasi-kegiatan"
     }]
 }, {
     "nama": "Basis Data"
@@ -45,23 +49,39 @@
     "icon": "bx-time-five",
     "url": "/app/pemberian-pakan"
 }, {
+    "nama": "Tahapan Pendataan"
+}, {
+    "nama": "Pendataan",
+    "icon": "bx-basket",
+    "url": "/app/transaksi",
+    "children": [{
+        "nama": "Panen",
+        "icon": "bx-basket",
+        "url": "/app/panen"
+    }, {
+        "nama": "Kuliner",
+        "icon": "bx-shopping-bag",
+        "url": "/app/kuliner"
+    }]
+}, {
     "nama": "Master Akuntan"
 }, {
-    "nama": "Panen",
-    "icon": "bx-basket",
-    "url": "/app/panen"
-}, {
-    "nama": "Penjualan",
-    "icon": "bx-trending-up",
-    "url": "/app/penjualan"
-}, {
-    "nama": "Pembelian",
-    "icon": "bx-shopping-bag",
-    "url": "/app/pembelian"
-}, {
-    "nama": "Jurnal Transaksi",
+    "nama": "Transaksi",
     "icon": "bx-book-content",
-    "url": "/app/transaksi"
+    "url": "/app/transaksi",
+    "children": [{
+        "nama": "Jurnal Transaksi",
+        "icon": "bx-book-content",
+        "url": "/app/transaksi"
+    }, {
+        "nama": "Pembelian",
+        "icon": "bx-shopping-bag",
+        "url": "/app/pembelian"
+    }, {
+        "nama": "Penjualan",
+        "icon": "bx-trending-up",
+        "url": "/app/penjualan"
+    }]
 }, {
     "nama": "Laporan",
     "icon": "bx-food-menu",

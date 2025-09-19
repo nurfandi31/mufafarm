@@ -8,7 +8,9 @@ use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\KolamController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\KulinerController;
 use App\Http\Controllers\PelaporanController;
+use App\Http\Controllers\DokumentasiKegiatanController;
 use App\Http\Controllers\PakanController;
 use App\Http\Controllers\PanenController;
 use App\Http\Controllers\PembelianController;
@@ -70,8 +72,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
 
     Route::resource('/panen', PanenController::class);
 
+    Route::resource('/kuliner', KulinerController::class);
+
     Route::resource('/pembelian', PembelianController::class);
-    // Route khusus Ajax ambil data panen
+
     Route::get('/panen/detail/{id}', [PenjualanController::class, 'getPanen']);
     Route::resource('/penjualan', PenjualanController::class);
 
@@ -84,6 +88,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
     Route::get('/pelaporan/sub-laporan/{file}', [PelaporanController::class, 'subLaporan']);
     Route::get('/pelaporan/simpan-saldo/{tahun}/{bulan?}', [PelaporanController::class, 'simpanSaldo']);
 
+    Route::resource('/dokumentasi-kegiatan', DokumentasiKegiatanController::class);
 
     Route::resource('/presensi', PresensiController::class);
 

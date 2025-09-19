@@ -21,12 +21,19 @@ class PanenController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->addColumn('jumlah_raw', function ($row) {
+                    return $row->jumlah;
+                })
                 ->editColumn('jumlah', function ($row) {
                     return $row->jumlah . ' ekor';
                 })
-                ->editColumn('berat_total', function ($row) {
-                    return $row->berat_total . ' ' . $row->bibit->kolam->kapasitas_bibit ?? '-';
+                ->addColumn('berat_raw', function ($row) {
+                    return $row->berat_total;
                 })
+                ->editColumn('berat_total', function ($row) {
+                    return $row->berat_total . ' ' . ($row->bibit->kolam->kapasitas_bibit ?? '-');
+                })
+
                 ->make(true);
         }
 

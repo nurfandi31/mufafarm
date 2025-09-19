@@ -76,15 +76,15 @@
                         data: null,
                         orderable: false,
                         searchable: false,
-                        render: function(data) {
-                            return `<div class="d-inline-flex gap-1">
-                                <a href="/app/panen/${data.id}/edit" class="btn btn-sm btn-primary" title="Edit">
-                                    Edit
-                                </a>
-                                <button class="btn btn-sm btn-danger btn-delete" data-id="${data.id}" title="Hapus">
-                                    Hapus
-                                </button>
-                            </div>`;
+                        render: function(data, type, row) {
+                            if (row.jumlah_raw == 0 || row.berat_raw == 0) {
+                                return `<span class="badge bg-secondary">Habis Terjual</span>`;
+                            } else {
+                                return `<div class="d-inline-flex gap-1">
+                            <a href="/app/panen/${data.id}/edit" class="btn btn-sm btn-primary" title="Edit">Edit</a>
+                            <button class="btn btn-sm btn-danger btn-delete" data-id="${data.id}" title="Hapus">Hapus</button>
+                        </div>`;
+                            }
                         }
                     }
                 ]

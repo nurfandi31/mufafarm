@@ -10,6 +10,15 @@ class Transaksi extends Model
     use HasFactory;
     protected $table = 'transaksis';
     protected $guarded = [];
+    public function rekeningDebit()
+    {
+        return $this->belongsTo(Rekening::class, 'rekening_debit');
+    }
+
+    public function rekeningKredit()
+    {
+        return $this->belongsTo(Rekening::class, 'rekening_kredit');
+    }
 
     public function user()
     {

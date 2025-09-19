@@ -6,8 +6,7 @@ use Carbon\Carbon;
 
 class Tanggal
 {
-
-    public function tglIndo($tanggal, $format = 'DD/MM/YYYY')
+    public static function tglIndo($tanggal, $format = 'DD/MM/YYYY')
     {
         if ($tanggal != '') {
             $array_tgl = explode('-', $tanggal);
@@ -30,13 +29,13 @@ class Tanggal
         return date('d/m/Y');
     }
 
-    public function tglNasional($tanggal)
+    public static function tglNasional($tanggal)
     {
         $tgl = Carbon::createFromFormat('d/m/Y', $tanggal)->format('Y-m-d');
         return $tgl;
     }
 
-    public function tglRomawi($tanggal)
+    public static function tglRomawi($tanggal)
     {
         $keuangan = new Keuangan;
         $array_tgl = explode('-', $tanggal);
@@ -50,122 +49,87 @@ class Tanggal
         return $bulan_rom . '/' . $tahun;
     }
 
-    public function tglLatin($tanggal)
+    public static function tglLatin($tanggal)
     {
         $tgl = explode('-', $tanggal);
 
-        return $tgl[2] . ' ' . $this->namaBulan($tanggal) . ' ' . $tgl[0];
+        return $tgl[2] . ' ' . self::namaBulan($tanggal) . ' ' . $tgl[0];
     }
 
-    public function tahun($tanggal)
+    public static function tahun($tanggal)
     {
         $tgl = explode('-', $tanggal);
-        $thn = $tgl[0];
-
-        return $thn;
+        return $tgl[0];
     }
 
-    public function bulan($tanggal)
+    public static function bulan($tanggal)
     {
         $tgl = explode('-', $tanggal);
-        $bln = $tgl[1];
-
-        return $bln;
+        return $tgl[1];
     }
 
-    public function namaBulan($tanggal)
+    public static function namaBulan($tanggal)
     {
         $tgl = explode('-', $tanggal);
         $bln = $tgl[1];
 
         switch ($bln) {
             case '01':
-                $bulan = 'Januari';
-                break;
+                return 'Januari';
             case '02':
-                $bulan = 'Februari';
-                break;
+                return 'Februari';
             case '03':
-                $bulan = 'Maret';
-                break;
+                return 'Maret';
             case '04':
-                $bulan = 'April';
-                break;
+                return 'April';
             case '05':
-                $bulan = 'Mei';
-                break;
+                return 'Mei';
             case '06':
-                $bulan = 'Juni';
-                break;
+                return 'Juni';
             case '07':
-                $bulan = 'Juli';
-                break;
+                return 'Juli';
             case '08':
-                $bulan = 'Agustus';
-                break;
+                return 'Agustus';
             case '09':
-                $bulan = 'September';
-                break;
+                return 'September';
             case '10':
-                $bulan = 'Oktober';
-                break;
+                return 'Oktober';
             case '11':
-                $bulan = 'November';
-                break;
+                return 'November';
             case '12':
-                $bulan = 'Desember';
-                break;
+                return 'Desember';
+            default:
+                return '';
         }
-
-        return $bulan;
     }
 
-    public function hari($tanggal)
+    public static function hari($tanggal)
     {
         $tgl = explode('-', $tanggal);
-        $hari = $tgl[2];
-
-        return $hari;
+        return $tgl[2];
     }
 
-    public function namaHari($tanggal)
+    public static function namaHari($tanggal)
     {
         $hari = date('D', strtotime($tanggal));
 
         switch ($hari) {
             case 'Sun':
-                $nama = "Minggu";
-                break;
-
+                return "Minggu";
             case 'Mon':
-                $nama = "Senin";
-                break;
-
+                return "Senin";
             case 'Tue':
-                $nama = "Selasa";
-                break;
-
+                return "Selasa";
             case 'Wed':
-                $nama = "Rabu";
-                break;
-
+                return "Rabu";
             case 'Thu':
-                $nama = "Kamis";
-                break;
-
+                return "Kamis";
             case 'Fri':
-                $nama = "Jumat";
-                break;
-
+                return "Jumat";
             case 'Sat':
-                $nama = "Sabtu";
-                break;
-
+                return "Sabtu";
             default:
-                $nama = "Tidak di ketahui";
-                break;
+                return "Tidak di ketahui";
         }
-
-        return $nama;
     }
 }
