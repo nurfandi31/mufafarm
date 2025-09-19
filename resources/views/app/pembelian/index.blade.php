@@ -63,11 +63,19 @@
                     },
                     {
                         data: 'harga_satuan',
-                        name: 'harga_satuan'
+                        name: 'harga_satuan',
+                        render: function(data, type, row) {
+                            if (data === null) return '';
+                            return Number(data).toLocaleString('id-ID');
+                        }
                     },
                     {
                         data: 'total',
-                        name: 'total'
+                        name: 'total',
+                        render: function(data, type, row) {
+                            if (data === null) return '';
+                            return Number(data).toLocaleString('id-ID');
+                        }
                     },
                     {
                         data: 'supplier',
@@ -116,9 +124,9 @@
                             data: form.serialize(),
                             success: function(r) {
                                 Swal.fire("Berhasil!", r.message, "success").then(
-                            () => {
-                                    cl.ajax.reload();
-                                });
+                                    () => {
+                                        cl.ajax.reload();
+                                    });
                             },
                             error: function(xhr) {
                                 let msg = xhr.responseJSON?.message ||

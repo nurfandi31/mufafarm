@@ -8,6 +8,7 @@ use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\KolamController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PakanController;
 use App\Http\Controllers\PanenController;
 use App\Http\Controllers\PembelianController;
@@ -77,6 +78,12 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
     Route::resource('/keuangan', KeuanganController::class);
 
     Route::resource('/transaksi', TransaksiController::class);
+
+    Route::get('/laporan', [PelaporanController::class, 'index']);
+    Route::get('/pelaporan/preview', [PelaporanController::class, 'preview']);
+    Route::get('/pelaporan/sub-laporan/{file}', [PelaporanController::class, 'subLaporan']);
+    Route::get('/pelaporan/simpan-saldo/{tahun}/{bulan?}', [PelaporanController::class, 'simpanSaldo']);
+
 
     Route::resource('/presensi', PresensiController::class);
 
