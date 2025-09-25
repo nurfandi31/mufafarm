@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Bibit;
-
+use App\Models\Penjualan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,14 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('panens', function (Blueprint $table) {
+        Schema::create('detailpenjualans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignIdFor(bibit::class);
-            $table->date('tanggal_panen');
+            $table->foreignIdFor(Penjualan::class);
+            $table->string('item_type');
+            $table->string('item_id');
             $table->string('jumlah');
-            $table->string('berat_total');
-            $table->string('jumlah_panen_keseluruhan');
-            $table->enum('status', ['ready', 'habis'])->default('ready');
+            $table->string('jumlah_satuan');
+            $table->string('harga_satuan');
+            $table->string('total');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('panens');
+        Schema::dropIfExists('detailpenjualans');
     }
 };

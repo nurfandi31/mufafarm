@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Kuliner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -22,11 +24,14 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('username', $request->username)->first();
-        if ($user) {
-            if (Hash::check($request->password, $user->password)) {
-                if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-                    return redirect('/app/dashboard')->with('success', 'Selamat datang ' . $user->nama_lengkap);
-                }
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+
+                // Panggil fungsi update kuliner kadaluarsa
+                $this->updateKulinerKadaluarsa();
+
+                return redirect('/app/dashboard')->with('success', 'Selamat datang ' . $user->nama_lengkap);
             }
         }
 
@@ -41,5 +46,17 @@ class AuthController extends Controller
         session()->regenerate();
 
         return redirect('/auth')->with('success', 'Anda telah berhasil keluar');
+    }
+
+    /**
+     * Update status kuliner yang kadaluarsa
+     */
+    private function updateKulinerKadaluarsa()
+    {
+        $today = Carbon::today();
+
+        Kuliner::whereDate('tanggal_kadaluarsa', '<', $today)
+            ->where('status', 'ready')
+            ->update(['status' => 'tidak_layak']);
     }
 }

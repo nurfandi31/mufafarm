@@ -14,11 +14,8 @@ return new class extends Migration
     {
         Schema::create('penjualans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignIdFor(Panen::class);
+            $table->string('kode_penjualan');
             $table->date('tanggal');
-            $table->string('harga_satuan');
-            $table->string('jumlah');
-            $table->string('total');
             $table->string('pembeli');
             $table->timestamps();
         });

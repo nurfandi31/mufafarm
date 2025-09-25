@@ -15,4 +15,14 @@ class Panen extends Model
     {
         return $this->belongsTo(Bibit::class, 'bibit_id', 'id');
     }
+
+    public function kolam()
+    {
+        return $this->belongsTo(Kolam::class, 'kolam_id', 'id');
+    }
+
+    public function kuliner()
+    {
+        return $this->hasMany(Kuliner::class, 'panen_id', 'id');
+    }
 }

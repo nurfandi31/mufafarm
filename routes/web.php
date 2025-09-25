@@ -19,6 +19,7 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Settings;
 
 
 /*
@@ -72,12 +73,19 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'app'], function () {
 
     Route::resource('/panen', PanenController::class);
 
+    Route::get('/kuliner/list/{id}', [KulinerController::class, 'list']);
     Route::resource('/kuliner', KulinerController::class);
 
     Route::resource('/pembelian', PembelianController::class);
 
     Route::get('/panen/detail/{id}', [PenjualanController::class, 'getPanen']);
+    Route::get('/kuliner/detail/{id}', [PenjualanController::class, 'getKuliner']);
+    Route::get('/penjualan/struk/{id}', [PenjualanController::class, 'cetak_struk']);
     Route::resource('/penjualan', PenjualanController::class);
+    Route::get('/app/penjualan/form', function () {
+        $settings = Settings::first();
+        return view('app.penjualan.form', compact('settings'));
+    })->name('penjualan.form');
 
     Route::resource('/keuangan', KeuanganController::class);
 

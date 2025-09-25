@@ -78,7 +78,7 @@
                         searchable: false,
                         render: function(data, type, row) {
                             if (row.jumlah_raw == 0 || row.berat_raw == 0) {
-                                return `<span class="badge bg-secondary">Habis Terjual</span>`;
+                                return `<span class="badge bg-secondary">Sold Out</span>`;
                             } else {
                                 return `<div class="d-inline-flex gap-1">
                             <a href="/app/panen/${data.id}/edit" class="btn btn-sm btn-primary" title="Edit">Edit</a>

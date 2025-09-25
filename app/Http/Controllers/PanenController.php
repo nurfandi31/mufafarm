@@ -76,12 +76,19 @@ class PanenController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $json = [
+            'jumlah'      => $request->jumlah,
+            'berat_total' => $request->berat_total,
+        ];
+        $jumlah_panen_keseluruhan = json_encode($json);
+
         $panen = Panen::create([
-            'bibit_id'      => $request->bibit_id,
-            'jumlah'        => $request->jumlah,
-            'berat_total'   => $request->berat_total,
-            'tanggal_panen' => $request->tanggal_panen,
-            'status'        => 'ready',
+            'bibit_id'                  => $request->bibit_id,
+            'jumlah'                    => $request->jumlah,
+            'berat_total'               => $request->berat_total,
+            'tanggal_panen'             => $request->tanggal_panen,
+            'jumlah_panen_keseluruhan'  => $jumlah_panen_keseluruhan,
+            'status'                    => 'ready',
         ]);
 
         return response()->json([
