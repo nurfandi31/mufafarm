@@ -1,8 +1,4 @@
 [{
-    "nama": "Dashboard",
-    "icon": "bx-home-smile",
-    "url": "/app/dashboard"
-}, {
     "nama": "Master Data"
 }, {
     "nama": "Dokumentasi Kegiatan",
@@ -10,19 +6,6 @@
     "url": "/app/dokumentasi-kegiatan",
 }, {
     "nama": "Basis Data"
-}, {
-    "nama": "Karyawan",
-    "icon": "bx-user",
-    "url": "/app/karyawan",
-    "children": [{
-        "nama": "Create Pekerja",
-        "icon": "bx-group",
-        "url": "/app/user/create"
-    }, {
-        "nama": "Data Karyawan",
-        "icon": "bx-leaf",
-        "url": "/app/user"
-    }]
 }, {
     "nama": "Kolam",
     "icon": "bx-landscape",
@@ -39,4 +22,19 @@
     "nama": "Pemberian Pakan",
     "icon": "bx-time-five",
     "url": "/app/pemberian-pakan"
+}, {
+    "nama": "Tahapan Pendataan"
+}, {
+    "nama": "Pendataan",
+    "icon": "bx-basket",
+    "url": "/app/transaksi",
+    "children": [{
+        "nama": "Panen",
+        "icon": "bx-basket",
+        "url": "/app/panen"
+    }, {
+        "nama": "Kuliner",
+        "icon": "bx-shopping-bag",
+        "url": "/app/kuliner"
+    }]
 }]

@@ -31,24 +31,43 @@ class PemberianPakanController extends Controller
     public function bibitlist(Request $request)
     {
         $search = $request->get('q');
-        $query = Bibit::select('id', 'nama');
-        if ($search) $query->where('nama', 'like', "%{$search}%");
-        return response()->json($query->get()->map(fn ($item) => [
-            'id' => $item->id,
-            'nama' => $item->nama,
-        ]));
+        $query = Bibit::with('kolam')->select('id', 'nama', 'jenis', 'kolam_id');
+        if ($search) {
+            $query->where('nama', 'like', "%{$search}%");
+        }
+
+        $data = $query->get()->map(function ($item) {
+            $kolamNama = $item->kolam->nama ?? '-';
+            $jenis = $item->jenis ?? '';
+            $text = $kolamNama . ' (' . $item->nama . ($jenis ? " - $jenis" : '') . ')';
+            return [
+                'id'   => $item->id,
+                'text' => $text,
+            ];
+        });
+
+        return response()->json($data);
     }
 
     public function pakanlist(Request $request)
     {
         $search = $request->get('q');
-        $query = Pakan::select('id', 'nama', 'satuan');
-        if ($search) $query->where('nama', 'like', "%{$search}%");
-        return response()->json($query->get()->map(fn ($item) => [
-            'id' => $item->id,
-            'nama' => $item->nama,
-            'satuan' => $item->satuan,
-        ]));
+
+        $query = Pakan::select('id', 'nama', 'satuan', 'stok')
+            ->where('stok', '>', 0);
+
+        if ($search) {
+            $query->where('nama', 'like', "%{$search}%");
+        }
+
+        return response()->json(
+            $query->get()->map(fn ($item) => [
+                'id'     => $item->id,
+                'nama'   => $item->nama,
+                'satuan' => $item->satuan,
+                'stok'   => $item->stok,
+            ])
+        );
     }
 
 

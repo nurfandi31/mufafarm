@@ -5,45 +5,26 @@
 }, {
     "nama": "Master Data"
 }, {
-    "nama": "Karyawan",
-    "icon": "bx-user",
-    "url": "/app/karyawan"
+    "nama": "Dokumentasi Kegiatan",
+    "icon": "bx-book",
+    "url": "/app/dokumentasi-kegiatan",
 }, {
-    "nama": "Program Pangan",
-    "icon": "bx-basket",
-    "url": "/app/program-pangan",
+    "nama": "Master Akuntan"
+}, {
+    "nama": "Transaksi",
+    "icon": "bx-book-content",
+    "url": "/app/transaksi",
     "children": [{
-        "nama": "Kelompok Pangan",
-        "icon": "bx-group",
-        "url": "/app/kelompok-pangan"
+        "nama": "Pembelian",
+        "icon": "bx-shopping-bag",
+        "url": "/app/pembelian"
     }, {
-        "nama": "Bahan Pangan",
-        "icon": "bx-leaf",
-        "url": "/app/bahan-pangan"
+        "nama": "Penjualan",
+        "icon": "bx-trending-up",
+        "url": "/app/penjualan"
     }]
 }, {
-    "nama": "Pemanfaat",
-    "icon": "bx-user-check",
-    "url": "/app/pemanfaat",
-    "children": [{
-        "nama": "Kelompok Pemanfaat",
-        "icon": "bx-group",
-        "url": "/app/kelompok-pemanfaat"
-    }, {
-        "nama": "Lembaga Pemanfaat",
-        "icon": "bx-data",
-        "url": "/app/data-pemanfaat"
-    }, {
-        "nama": "Data Pemanfaat",
-        "icon": "bx-id-card",
-        "url": "/app/nama-pemanfaat"
-    }]
-}, {
-    "nama": "Periode Masak",
-    "icon": "bx-calendar",
-    "url": "/app/periode-masak"
-}, {
-    "nama": "Dokumentasi kegiatan",
-    "icon": "bx-photo-album",
-    "url": "/app/dokumentasi-kegiatan"
+    "nama": "Laporan",
+    "icon": "bx-food-menu",
+    "url": "/app/laporan"
 }]

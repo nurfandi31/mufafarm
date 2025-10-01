@@ -22,6 +22,6 @@ class Bibit extends Model
 
     public function kolam()
     {
-        return $this->belongsTo(Kolam::class);
+        return $this->belongsTo(Kolam::class, 'kolam_id', 'id');
     }
 }

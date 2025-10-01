@@ -33,7 +33,7 @@
                             <label class="form-label" for="jumlah">Jumlah</label>
                             <div class="input-group">
                                 <input type="number" id="jumlah" name="jumlah" class="form-control"
-                                    placeholder="Jumlah bibit" />
+                                    placeholder="Jumlah Pakan" />
                                 <button class="btn btn-outline-secondary" type="button" id="satuanPakan"></button>
                             </div>
                             <small id="msg_jumlah" class="text-danger"></small>

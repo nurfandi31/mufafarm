@@ -99,17 +99,20 @@
             });
         });
 
-
         $(document).ready(function() {
             const pakanSelect = $('#pakan_id');
             const satuanButton = $('#satuanPakan');
+            const jumlahInput = $('#jumlah');
+            let stokPakan = 0;
 
             $.getJSON('/app/pp-pakan/list', function(data) {
                 pakanSelect.empty();
                 pakanSelect.append('<option value="">Pilih Pakan</option>');
                 data.forEach(item => {
                     pakanSelect.append(`
-                <option value="${item.id}" data-satuan="${item.satuan}">
+                <option value="${item.id}" 
+                        data-satuan="${item.satuan}" 
+                        data-stok="${item.stok}">
                     ${item.nama}
                 </option>
             `);
@@ -117,21 +120,42 @@
             });
 
             pakanSelect.on('change', function() {
-                const satuan = $(this).find('option:selected').data('satuan');
+                const selected = $(this).find('option:selected');
+                const satuan = selected.data('satuan');
+                stokPakan = selected.data('stok') || 0;
+
                 satuanButton.text(satuan || '');
+                jumlahInput.val('');
             });
 
+            jumlahInput.on('input', function() {
+                let val = parseFloat($(this).val());
+
+                if (isNaN(val) || val <= 0) return;
+
+                if (val > stokPakan) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Stok Tidak Cukup',
+                        text: `Stok tersedia hanya ${stokPakan}`,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    $(this).val(stokPakan);
+                }
+            });
             const bibitSelect = $('#bibit_id');
             $.getJSON('/app/pp-bibit/list', function(data) {
                 bibitSelect.empty();
                 bibitSelect.append('<option value="">Pilih Bibit</option>');
                 data.forEach(item => {
                     bibitSelect.append(`
-                <option value="${item.id}">${item.nama}</option>
+                <option value="${item.id}">${item.text}</option>
             `);
                 });
             });
         });
+
 
         $('#btnTambah').click(() => {
             const form = $('#FormPemberianPakan');

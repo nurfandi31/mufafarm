@@ -61,10 +61,11 @@ class PakanController extends Controller
         };
 
         $pakan = Pakan::create([
-            'nama' => $request->nama,
-            'stok' => $request->stok,
-            'satuan' => $request->satuan,
-            'harga' => $harga,
+            'nama'          => $request->nama,
+            'stok'          => $request->stok,
+            'satuan'        => $request->satuan,
+            'harga'         => $harga,
+            'total_pakan'   => $request->stok,
         ]);
         return response()->json([
             'success' => true,
